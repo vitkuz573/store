@@ -8,12 +8,12 @@
             </div>
             <div class="col-md-6">
                 <div class="card-body">
-                    <h5 class="card-title">{{ $product->name }}</h5>
-                    <p class="card-text">{{ $product->description }}</p>
-                    <p class="card-text h3">{{ $product->price }} руб.</p>
+                    <h2 class="card-title">{{ $product->name }}</h2>
                     @if ($product->is_new)
                         <p class="card-text text-success font-weight-bold">NEW!</p>
                     @endif
+                    <p class="card-text">{{ $product->description }}</p>
+                    <p class="card-text h3">{{ $product->price }} руб.</p>
                 </div>
                 <div class="card-footer bg-white d-flex justify-content-between align-items-center">
                     <div>
@@ -21,9 +21,6 @@
                             @csrf
                             <button type="submit" class="btn btn-primary rounded-pill px-4">Add to Cart</button>
                         </form>
-                        @if ($product->is_new)
-                            <button class="btn btn-success rounded-pill ml-2" disabled>New!</button>
-                        @endif
                     </div>
                     <div>
                         <a href="{{ route('products.index') }}" class="btn btn-outline-secondary rounded-pill px-4">Back to Products</a>
@@ -46,8 +43,14 @@
             padding: 1.5rem;
         }
 
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
         .card-text {
             font-size: 1.2rem;
+            margin-bottom: 0.5rem;
         }
 
         .card-footer {
@@ -82,18 +85,12 @@
             box-shadow: none;
         }
 
-        .btn-success {
-            background-color: #28a745;
-            border-color: #28a745;
+        .text-success {
+            color: #28a745;
         }
 
-        .btn-success:hover {
-            background-color: #218838;
-            border-color: #1e7e34;
-        }
-
-        .btn-success:focus {
-            box-shadow: none;
+        .font-weight-bold {
+            font-weight: bold;
         }
     </style>
 @endsection

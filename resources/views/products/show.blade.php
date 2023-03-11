@@ -17,7 +17,10 @@
                         <h2 class="text-primary mb-0">{{ $product->price }} руб.</h2>
                         <form method="POST" action="{{ route('cart.add', $product) }}">
                             @csrf
-                            <button type="submit" class="btn btn-primary px-4 rounded-pill">Add to Cart</button>
+                            <div class="input-group mb-3">
+                                <input type="number" name="quantity" class="form-control" value="1" min="1" max="{{ $product->stock }}" aria-label="Quantity">
+                                <button type="submit" class="btn btn-primary px-4 rounded-pill">Add to Cart</button>
+                            </div>
                         </form>
                     </div>
                     <a href="{{ route('products.index') }}" class="btn btn-outline-primary px-4 rounded-pill mt-auto">Back to Products</a>
@@ -55,15 +58,6 @@
             border-color: #4CAF50;
             color: #FFF;
             transform: translateY(-2px);
-        }
-
-        .card-body {
-            padding: 2rem;
-        }
-
-        .card-title {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
         }
 
         .text-muted {

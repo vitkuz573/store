@@ -14,12 +14,13 @@
                         @endif
                         <img src="{{ $product->image_url }}" class="card-img-top rounded-3" alt="{{ $product->name }} image">
                     </div>
-                    <div class="card-body">
+                    <div class="card-body p-3">
                         <h5 class="card-title fw-bold text-uppercase mb-2">{{ $product->name }}</h5>
-                        <p class="card-text text-muted">{{ $product->description }}</p>
-                    </div>
-                    <div class="card-footer bg-white border-top-0">
-                        <p class="card-text text-primary fw-bold mb-0">{{ $product->price }} руб.</p>
+                        <p class="card-text text-muted">{{ Str::limit($product->description, 100) }}</p>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <p class="card-text text-primary fw-bold h5 mb-0">{{ $product->price }} руб.</p>
+                            <a href="{{ route('products.show', $product) }}" class="btn btn-primary">Подробнее</a>
+                        </div>
                     </div>
                 </div>
             </div>

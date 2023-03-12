@@ -106,4 +106,27 @@ class CartController extends Controller
 
         return redirect()->route('cart.index')->with('success', 'Cart cleared successfully!');
     }
+
+    public function checkout()
+    {
+        // получить пользователя и корзину
+        $user = Auth::user();
+        $cart = Cache::remember('user-cart-' . $user->id, 3600, function () use ($user) {
+            return Cart::with(['items' => function($query) {
+                $query->with('product');
+            }])->withCount('items')->where('user_id', $user->id)->first();
+        });
+
+        // если корзина пустая, перенаправить на страницу корзины
+        if (!$cart) {
+            return redirect()->route('cart.index')->with('error', 'Cart is empty!');
+        }
+
+        // получить список товаров в корзине и общую стоимость
+        $cartItems = $cart->items;
+        $totalPrice = $cart->getTotalPrice();
+
+        // передать список товаров и общую стоимость в представление checkout.blade.php
+        return view('cart.checkout', compact('cartItems', 'totalPrice'));
+    }
 }

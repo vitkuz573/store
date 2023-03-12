@@ -26,6 +26,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
     Route::post('/cart/update', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
     Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('checkout');
+    Route::post('/checkout/place-order', [CartController::class, 'placeOrder'])->name('checkout.place-order');
 });
 
 Route::resource('products', ProductController::class)->only(['index', 'show']);

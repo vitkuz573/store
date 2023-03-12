@@ -51,6 +51,3 @@ Route::get('/categories', [CategoryController::class, 'index']);
 
 // Default authentication routes
 Auth::routes();
-
-// Named home route
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

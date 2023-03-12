@@ -2,16 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::orderBy('created_at', 'desc')->simplePaginate(9);
+        $selectedCategory = $request->input('category');
 
-        return view('products.index', compact('products'));
+        $categories = Category::all();
+
+        $products = Product::query();
+
+        if ($selectedCategory) {
+            $products->inCategory($selectedCategory);
+        }
+
+        $products = $products->paginate(9);
+
+        return view('products.index', [
+            'products' => $products,
+            'categories' => $categories,
+            'selectedCategory' => $selectedCategory,
+        ]);
     }
 
     public function show(Product $product)

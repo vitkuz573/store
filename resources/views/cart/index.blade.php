@@ -23,9 +23,14 @@
                     <tbody>
                     @foreach ($cartItems as $cartItem)
                         <tr>
-                            <td>{{ $cartItem->product->name }}</td>
+                            <td>
+                                <img src="{{ $cartItem->product->image }}" alt="{{ $cartItem->product->name }}" width="50px">
+                                {{ $cartItem->product->name }}
+                            </td>
                             <td>{{ $cartItem->product->price }}</td>
-                            <td>{{ $cartItem->quantity }}</td>
+                            <td>
+                                <input type="number" name="quantity" min="1" value="{{ $cartItem->quantity }}">
+                            </td>
                             <td>{{ $cartItem->product->price * $cartItem->quantity }}</td>
                         </tr>
                     @endforeach
@@ -37,7 +42,8 @@
                 </table>
 
                 <div class="text-right">
-                    <a href="{{ route('cart.clear') }}" class="btn btn-outline-danger">Clear Cart</a>
+                    <a href="{{ route('cart.clear') }}" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to clear your cart?')">Clear Cart</a>
+                    <a href="{{ route('products.index') }}" class="btn btn-secondary">Continue Shopping</a>
                     <a href="{{ route('checkout') }}" class="btn btn-primary">Proceed to Checkout</a>
                 </div>
 
@@ -46,4 +52,30 @@
             @endif
         </div>
     </div>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        img {
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        input[type=number] {
+            width: 50px;
+        }
+    </style>
 @endsection

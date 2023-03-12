@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -128,5 +130,42 @@ class CartController extends Controller
 
         // передать список товаров и общую стоимость в представление checkout.blade.php
         return view('cart.checkout', compact('cartItems', 'totalPrice'));
+    }
+
+    public function placeOrder(Request $request)
+    {
+        // получить пользователя и корзину
+        $user = Auth::user();
+        $cart = Cache::remember('user-cart-' . $user->id, 3600, function () use ($user) {
+            return Cart::with(['items' => function($query) {
+                $query->with('product');
+            }])->withCount('items')->where('user_id', $user->id)->first();
+        });
+
+        // создать новый заказ
+        $order = new Order();
+        $order->user_id = $user->id;
+        $order->total_price = $cart->getTotalPrice();
+        $order->save();
+
+        // добавить товары в заказ
+        foreach ($cart->items as $cartItem) {
+            $product = $cartItem->product;
+            $quantity = $cartItem->quantity;
+            $price = $product->price;
+            $orderItem = new OrderItem();
+            $orderItem->order_id = $order->id;
+            $orderItem->product_id = $product->id;
+            $orderItem->quantity = $quantity;
+            $orderItem->price = $price;
+            $orderItem->save();
+        }
+
+        // очистить корзину пользователя
+        $cart->items()->delete();
+        Cache::forget('user-cart-' . $user->id);
+
+        // перенаправить на страницу заказов
+        return redirect()->route('orders.index')->with('success', 'Your order has been placed successfully!');
     }
 }

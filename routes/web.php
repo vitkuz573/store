@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/cart/update', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
     Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('checkout');
     Route::post('/checkout/place-order', [CartController::class, 'placeOrder'])->name('checkout.place-order');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
 });
 
 Route::resource('products', ProductController::class)->only(['index', 'show']);

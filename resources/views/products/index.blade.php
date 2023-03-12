@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="row row-cols-1 row-cols-md-3 g-4 mx-5">
         @forelse($products as $product)
             <div class="col mb-4">
                 <div class="card h-100 shadow-sm border-0">

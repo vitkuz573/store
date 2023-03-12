@@ -4,7 +4,7 @@
     <div class="container py-5">
         <div class="row justify-content-center align-items-center">
             <div class="col-lg-5 mb-4 mb-lg-0">
-                <img src="{{ $product->image_url }}" class="w-100 rounded-3 shadow-lg" alt="{{ $product->name }} image">
+                <img src="{{ $product->image_url }}" class="w-100 rounded-3 shadow-lg" alt="{{ $product->name }} image" aria-label="{{ $product->name }} image">
             </div>
             <div class="col-lg-7">
                 <div class="bg-white rounded-3 shadow-lg p-5 h-100">
@@ -13,13 +13,18 @@
                         <span class="badge bg-success mb-4">NEW!</span>
                     @endif
                     <p class="text-muted mb-4">{{ $product->description }}</p>
-                    <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
                         <h2 class="text-primary mb-0">{{ $product->price }} руб.</h2>
                         <form method="POST" action="{{ route('cart.add', $product) }}">
                             @csrf
                             <div class="input-group mb-3">
-                                <input type="number" name="quantity" class="form-control" value="1" min="1" max="{{ $product->stock }}" aria-label="Quantity">
-                                <button type="submit" class="btn btn-primary px-4 rounded-pill">Add to Cart</button>
+                                <input type="number" name="quantity" class="form-control" value="1" min="1" max="{{ $product->stock }}" aria-label="Quantity" required>
+                                <button type="submit" class="btn btn-primary px-4 rounded-pill mt-3 mt-md-0 ms-md-3">Add to Cart</button>
+                                @if ($errors->has('quantity'))
+                                    <div class="invalid-feedback">
+                                        {{ $errors->first('quantity') }}
+                                    </div>
+                                @endif
                             </div>
                         </form>
                     </div>

@@ -24,7 +24,7 @@
                         </thead>
                         <tbody>
                         @foreach ($cartItems as $cartItem)
-                            <tr>
+                            <tr id="cart-item-{{ $cartItem->product->id }}">
                                 <td>
                                     <img src="{{ $cartItem->product->image_url }}" alt="{{ $cartItem->product->name }}" width="50px">
                                     {{ $cartItem->product->name }}
@@ -33,7 +33,7 @@
                                 <td class="item-quantity">
                                     <input type="number" name="quantity" min="1" max="{{ $cartItem->product->stock }}" value="{{ $cartItem->quantity }}" data-product-id="{{ $cartItem->product->id }}">
                                 </td>
-                                <td class="item-total">{{ $cartItem->product->price * $cartItem->quantity }} руб.</td>
+                                <td class="item-total item-total-{{ $cartItem->product->id }}">{{ $cartItem->product->price * $cartItem->quantity }} руб.</td>
                                 <td class="text-center">
                                     <button class="btn btn-sm btn-outline-danger remove-from-cart" data-product-id="{{ $cartItem->product->id }}">Удалить</button>
                                 </td>
@@ -41,7 +41,7 @@
                         @endforeach
                         <tr>
                             <td colspan="3" class="text-right"><strong>Итого:</strong></td>
-                            <td>{{ $totalPrice }} руб.</td>
+                            <td class="total-price">{{ $totalPrice }} руб.</td>
                             <td></td>
                         </tr>
                         </tbody>
@@ -56,28 +56,75 @@
 
             @else
                 <p>Ваша корзина пуста.</p>
-    @endif
+            @endif
         </div>
     </div>
 @endsection
 
 @section('scripts')
     <script>
-        $(document).ready(function() {
-            $('.remove-from-cart').on('click', function() {
-                let productId = $(this).data('product-id');
+        document.addEventListener('DOMContentLoaded', function() {
+            let removeFromCartButtons = document.querySelectorAll('.remove-from-cart');
 
-                $.ajax({
-                    url: "{{ route('cart.remove') }}",
-                    method: "POST",
-                    data: {
-                        product_id: productId
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            window.location.reload();
-                        }
-                    }
+            removeFromCartButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    let productId = button.dataset.productId;
+
+                    fetch("{{ route('cart.remove') }}", {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify({
+                            product_id: productId
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                window.location.reload();
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                });
+            });
+
+            let itemQuantityInputs = document.querySelectorAll('.item-quantity input');
+
+            itemQuantityInputs.forEach(function(input) {
+                input.addEventListener('change', function() {
+                    let productId = input.dataset.productId;
+                    let quantity = input.value;
+
+                    fetch("{{ route('cart.update') }}", {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify({
+                            product_id: productId,
+                            quantity: quantity
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                let price = data.price;
+                                let itemTotal = document.querySelector('.item-total-' + productId);
+                                itemTotal.textContent = price + ' руб.';
+
+                                let totalPrice = data.total_price;
+                                let totalPriceElement = document.querySelector('.total-price');
+                                totalPriceElement.textContent = totalPrice + ' руб.';
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
                 });
             });
         });

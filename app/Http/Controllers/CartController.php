@@ -6,13 +6,18 @@ use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class CartController extends Controller
 {
     public function index()
     {
         $user = Auth::user();
-        $cart = Cart::with('items.product')->where('user_id', $user->id)->first();
+        $cart = Cache::remember('user-cart-' . $user->id, 3600, function () use ($user) {
+            return Cart::with(['items' => function($query) {
+                $query->with('product');
+            }])->withCount('items')->where('user_id', $user->id)->first();
+        });
 
         if (!$cart) {
             $cart = new Cart();
@@ -47,6 +52,8 @@ class CartController extends Controller
             $cart->addProduct($product, $validatedData['quantity']);
         }
 
+        Cache::forget('user-cart-' . $user->id);
+
         return redirect()->route('products.index')->with('success', 'Product added to cart successfully!');
     }
 
@@ -60,6 +67,8 @@ class CartController extends Controller
         }
 
         $cart->removeProduct($product);
+
+        Cache::forget('user-cart-' . $user->id);
 
         return redirect()->route('carts.show')->with('success', 'Product removed from cart successfully!');
     }
@@ -79,6 +88,8 @@ class CartController extends Controller
 
         $cart->updateProductQuantity($product, $validatedData['quantity']);
 
+        Cache::forget('user-cart-' . $user->id);
+
         return redirect()->route('carts.show')->with('success', 'Cart updated successfully!');
     }
 
@@ -90,6 +101,8 @@ class CartController extends Controller
         if ($cart) {
             $cart->items()->delete();
         }
+
+        Cache::forget('user-cart-' . $user->id);
 
         return redirect()->route('cart.index')->with('success', 'Cart cleared successfully!');
     }

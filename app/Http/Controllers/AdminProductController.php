@@ -17,4 +17,13 @@ class AdminProductController extends Controller
     {
         return view('admin.products.create');
     }
+
+    public function destroy(Product $product)
+    {
+        $product->cartItems()->delete();
+        $product->delete();
+
+        return redirect()->route('admin.products.index')
+            ->with('success', 'Товар успешно удален');
+    }
 }

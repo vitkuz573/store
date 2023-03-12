@@ -6,10 +6,28 @@ use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException;
 
 class CartController extends Controller
 {
+    public function index()
+    {
+        $user = Auth::user();
+        $cart = Cart::with('items.product')->where('user_id', $user->id)->first();
+
+        if (!$cart) {
+            $cart = new Cart();
+            $cart->user_id = $user->id;
+            $cart->save();
+        }
+
+        $cartItems = $cart->items;
+        $totalPrice = $cart->getTotalPrice();
+
+        return view('cart.index', compact('cartItems', 'totalPrice'));
+    }
+
     public function add(Request $request, Product $product)
     {
         $validatedData = $request->validate([

@@ -22,8 +22,10 @@ Route::get('/products/{product}', [ProductController::class, 'show'])->name('pro
 
 Route::get('/categories', [CategoryController::class, 'index']);
 
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::get('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
+Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('checkout');
 Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
-
 
 Route::get('/', function () {
     return view('welcome');

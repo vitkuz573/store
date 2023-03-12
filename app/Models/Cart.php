@@ -29,6 +29,17 @@ class Cart extends Model
         return $this->items()->where('product_id', $product->id)->first();
     }
 
+    public function getTotalPrice()
+    {
+        $totalPrice = 0;
+
+        foreach ($this->items as $item) {
+            $totalPrice += $item->quantity * $item->product->price;
+        }
+
+        return $totalPrice;
+    }
+
     public function addProduct(Product $product, $quantity)
     {
         $cartItem = new CartItem();

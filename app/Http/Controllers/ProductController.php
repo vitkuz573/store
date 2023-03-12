@@ -14,13 +14,13 @@ class ProductController extends Controller
 
         $categories = Category::all();
 
-        $products = Product::query();
+        $productsQuery = Product::query();
 
         if ($selectedCategory) {
-            $products->inCategory($selectedCategory);
+            $productsQuery->inCategory($selectedCategory);
         }
 
-        $products = $products->paginate(9);
+        $products = Product::with('categories')->orderBy('created_at', 'desc')->paginate(9);
 
         return view('products.index', [
             'products' => $products,

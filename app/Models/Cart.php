@@ -38,10 +38,10 @@ class Cart extends Model
         $cartItem->save();
     }
 
-    public function incrementQuantity(Product $product)
+    public function incrementQuantity(Product $product, $quantity)
     {
         $cartItem = $this->getCartItem($product);
-        $cartItem->quantity++;
+        $cartItem->quantity += $quantity;
         $cartItem->save();
     }
 

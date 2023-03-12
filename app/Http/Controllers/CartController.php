@@ -134,21 +134,33 @@ class CartController extends Controller
 
     public function placeOrder(Request $request)
     {
-        // получить пользователя и корзину
+        // Получаем пользователя и корзину
         $user = Auth::user();
         $cart = Cache::remember('user-cart-' . $user->id, 3600, function () use ($user) {
-            return Cart::with(['items' => function($query) {
+            return Cart::with(['items' => function ($query) {
                 $query->with('product');
             }])->withCount('items')->where('user_id', $user->id)->first();
         });
 
-        // создать новый заказ
+        // Если корзина пустая, перенаправляем на страницу корзины
+        if (!$cart || $cart->items_count === 0) {
+            return redirect()->route('cart.index')->with('error', 'Cart is empty!');
+        }
+
+        // Создаем новый заказ и заполняем его поля
         $order = new Order();
         $order->user_id = $user->id;
         $order->total_price = $cart->getTotalPrice();
+        $order->customer_name = $request->input('customer_name');
+        $order->customer_email = $request->input('customer_email');
+        $order->shipping_address = $request->input('shipping_address');
+        $order->payment_method = $request->input('payment_method');
+        $order->status = 'Ожидает'; // Устанавливаем статус заказа
+
+        // Сохраняем заказ в базу данных
         $order->save();
 
-        // добавить товары в заказ
+        // Добавляем каждый товар из корзины как отдельный OrderItem в базу данных
         foreach ($cart->items as $cartItem) {
             $product = $cartItem->product;
             $quantity = $cartItem->quantity;
@@ -161,11 +173,11 @@ class CartController extends Controller
             $orderItem->save();
         }
 
-        // очистить корзину пользователя
+        // Очищаем корзину пользователя
         $cart->items()->delete();
         Cache::forget('user-cart-' . $user->id);
 
-        // перенаправить на страницу заказов
+        // Перенаправляем на страницу заказов с сообщением об успехе
         return redirect()->route('orders.index')->with('success', 'Your order has been placed successfully!');
     }
 }

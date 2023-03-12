@@ -16,6 +16,12 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->decimal('total_price', 10)->default(0);
             $table->enum('status', ['Ожидает', 'В обработке', 'Доставляется', 'Доставлен'])->default('Ожидает');
+            $table->string('customer_name');
+            $table->string('customer_email');
+            $table->string('shipping_address');
+            $table->string('payment_method');
+            $table->string('transaction_id')->nullable();
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }

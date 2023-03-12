@@ -18,7 +18,7 @@
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
+                    <input type="email" class="form-control" id="customer_email" name="customer_email" value="{{ old('email') }}" required>
                 </div>
                 <div class="form-group">
                     <label for="phone">Телефон</label>
@@ -26,7 +26,18 @@
                 </div>
                 <div class="form-group">
                     <label for="address">Адрес доставки</label>
-                    <input type="text" class="form-control" id="address" name="address" value="{{ old('address') }}" required>
+                    <input type="text" class="form-control" id="shipping_address" name="shipping_address" value="{{ old('address') }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="customer_name">Имя покупателя</label>
+                    <input type="text" class="form-control" id="customer_name" name="customer_name" value="{{ old('customer_name') }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="payment_method">Способ оплаты</label>
+                    <select class="form-control" id="payment_method" name="payment_method" required>
+                        <option value="cash">Наличными при получении</option>
+                        <option value="card">Онлайн-оплата банковской картой</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="notes">Примечания к заказу</label>

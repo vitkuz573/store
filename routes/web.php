@@ -24,11 +24,11 @@ Route::get('/', fn () => redirect()->route('products.index'));
 Route::middleware(['auth'])->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::get('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
-    Route::post('/cart/add/{product}', [CartController::class, 'addToCart'])->name('cart.addToCart');
-    Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.removeFromCart');
+    Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
     Route::post('/cart/update', [CartController::class, 'updateCartItemQuantity'])->name('cart.updateCartItemQuantity');
-    Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
-    Route::post('/cart/place-order', [CartController::class, 'placeOrder'])->name('cart.placeOrder');
+    Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('checkout');
+    Route::post('/cart/place-order', [CartController::class, 'placeOrder'])->name('checkout.place-order');
     Route::resource('orders', OrderController::class)->only(['index', 'show']);
 });
 

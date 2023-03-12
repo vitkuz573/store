@@ -29,7 +29,7 @@
         @endforelse
     </div>
     <div class="d-flex justify-content-center mt-4">
-        {{ $products->links() }}
+        {{ $products->links('pagination::simple-bootstrap-4') }}
     </div>
 @endsection
 

@@ -6,8 +6,6 @@ use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Validation\ValidationException;
 
 class CartController extends Controller
 {
@@ -82,5 +80,17 @@ class CartController extends Controller
         $cart->updateProductQuantity($product, $validatedData['quantity']);
 
         return redirect()->route('carts.show')->with('success', 'Cart updated successfully!');
+    }
+
+    public function clear()
+    {
+        $user = Auth::user();
+        $cart = Cart::whereUserId($user->id)->first();
+
+        if ($cart) {
+            $cart->items()->delete();
+        }
+
+        return redirect()->route('cart.index')->with('success', 'Cart cleared successfully!');
     }
 }

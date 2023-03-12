@@ -19,7 +19,7 @@
                             @csrf
                             <div class="input-group mb-3">
                                 <input type="number" name="quantity" class="form-control" value="1" min="1" max="{{ $product->stock }}" aria-label="Quantity" required>
-                                <button type="submit" class="btn btn-primary px-4 rounded-pill mt-3 mt-md-0 ms-md-3">Add to Cart</button>
+                                <button type="submit" class="btn btn-primary px-4 rounded-pill mt-3 mt-md-0 ms-md-3">Добавить в корзину</button>
                                 @if ($errors->has('quantity'))
                                     <div class="invalid-feedback">
                                         {{ $errors->first('quantity') }}
@@ -28,7 +28,7 @@
                             </div>
                         </form>
                     </div>
-                    <a href="{{ route('products.index') }}" class="btn btn-outline-primary px-4 rounded-pill mt-auto">Back to Products</a>
+                    <a href="{{ route('products.index') }}" class="btn btn-outline-primary px-4 rounded-pill mt-auto">Назад к продуктам</a>
                 </div>
             </div>
         </div>

@@ -2,25 +2,49 @@
 
 namespace Database\Seeders;
 
-use App\Models\Category;
-use App\Models\Product;
+use Database\Factories\CategoryFactory;
+use Database\Factories\ProductFactory;
+use Exception;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class CategorySeeder extends Seeder
 {
+    private CategoryFactory $categoryFactory;
+    private ProductFactory $productFactory;
+    private const CATEGORY_COUNT = 5;
+    private const PRODUCT_COUNT = 10;
+    private const MAX_CATEGORY_PER_PRODUCT = 5;
+
+    public function __construct(CategoryFactory $categoryFactory, ProductFactory $productFactory)
+    {
+        $this->categoryFactory = $categoryFactory;
+        $this->productFactory = $productFactory;
+    }
+
     /**
      * Run the database seeds.
+     *
+     * @return void
+     * @throws Exception
      */
     public function run(): void
     {
-        Category::factory()->count(5)->create();
+        DB::beginTransaction();
 
-        $categories = Category::all();
+        try {
+            $categories = $this->categoryFactory->count(self::CATEGORY_COUNT)->create();
 
-        Product::factory()->count(10)->create()->each(function ($product) use ($categories) {
-            $product->categories()->attach(
-                $categories->random(rand(1, 5))->pluck('id')->toArray()
-            );
-        });
+            $this->productFactory->count(self::PRODUCT_COUNT)->create()->each(function ($product) use ($categories) {
+                $product->categories()->attach(
+                    $categories->random(rand(1, self::MAX_CATEGORY_PER_PRODUCT))->pluck('id')->toArray()
+                );
+            });
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
     }
 }

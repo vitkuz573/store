@@ -10,7 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class AdminUserController extends Controller
 {
     public function index(): View|\Illuminate\Foundation\Application|Factory|Application
     {

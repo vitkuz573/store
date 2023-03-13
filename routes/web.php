@@ -6,7 +6,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminUserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -40,7 +40,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(fun
         return view('admin.index');
     })->name('index');
 
-    Route::resource('users', UserController::class)->except(['show', 'create', 'store']);
+    Route::resource('users', AdminUserController::class)->except(['show', 'create', 'store']);
     Route::resource('orders', AdminOrderController::class)->except(['create', 'store']);
     Route::resource('products', AdminProductController::class)->except('show');
 });

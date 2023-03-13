@@ -60,7 +60,7 @@ class CartController extends Controller
 
         Cache::forget('user-cart-' . $user->id);
 
-        return redirect()->route('products.index')->with('success', 'Product added to cart successfully!');
+        return redirect()->route('products.index')->with('success', 'Товар успешно добавлен в корзину!');
     }
 
     public function remove(Request $request, Product $product): RedirectResponse
@@ -69,14 +69,14 @@ class CartController extends Controller
         $cart = Cart::whereUserId($user->id)->first();
 
         if (!$cart) {
-            return redirect()->route('products.index')->with('error', 'Cart is empty!');
+            return redirect()->route('products.index')->with('error', 'Корзина пуста!');
         }
 
         $cart->removeProduct($product);
 
         Cache::forget('user-cart-' . $user->id);
 
-        return redirect()->route('carts.show')->with('success', 'Product removed from cart successfully!');
+        return redirect()->route('carts.show')->with('success', 'Товар успешно удален из корзины!');
     }
 
     public function update(Request $request, Product $product): RedirectResponse
@@ -96,7 +96,7 @@ class CartController extends Controller
 
         Cache::forget('user-cart-' . $user->id);
 
-        return redirect()->route('carts.show')->with('success', 'Cart updated successfully!');
+        return redirect()->route('carts.show')->with('success', 'Корзина успешно обновлена!');
     }
 
     public function clear(): RedirectResponse
@@ -110,7 +110,7 @@ class CartController extends Controller
 
         Cache::forget('user-cart-' . $user->id);
 
-        return redirect()->route('cart.index')->with('success', 'Cart cleared successfully!');
+        return redirect()->route('cart.index')->with('success', 'Корзина успешно очищена!');
     }
 
     public function checkout(): Factory|View|\Illuminate\Foundation\Application|RedirectResponse|Application
@@ -124,7 +124,7 @@ class CartController extends Controller
         });
 
         if (!$cart) {
-            return redirect()->route('cart.index')->with('error', 'Cart is empty!');
+            return redirect()->route('cart.index')->with('error', 'Корзина пуста!');
         }
 
         $cartItems = $cart->items;
@@ -143,7 +143,7 @@ class CartController extends Controller
         });
 
         if (!$cart || $cart->items_count === 0) {
-            return redirect()->route('cart.index')->with('error', 'Cart is empty!');
+            return redirect()->route('cart.index')->with('error', 'Корзина пуста!');
         }
 
         $order = new Order();
@@ -161,6 +161,7 @@ class CartController extends Controller
             $product = $cartItem->product;
             $quantity = $cartItem->quantity;
             $price = $product->price;
+
             $orderItem = new OrderItem();
             $orderItem->order_id = $order->id;
             $orderItem->product_id = $product->id;
@@ -172,6 +173,6 @@ class CartController extends Controller
         $cart->items()->delete();
         Cache::forget('user-cart-' . $user->id);
 
-        return redirect()->route('orders.index')->with('success', 'Your order has been placed successfully!');
+        return redirect()->route('orders.index')->with('success', 'Ваш заказ успешно размещен!');
     }
 }

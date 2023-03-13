@@ -45,7 +45,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(fun
     Route::resource('products', AdminProductController::class)->except('show');
 });
 
-// Публичные маршруты для товаров и категорий
+// Публичные маршруты
 Route::resource('products', ProductController::class)->only(['index', 'show']);
 Route::get('/categories', [CategoryController::class, 'index']);
 

@@ -36,8 +36,14 @@
                                     <p class="card-text text-primary fw-bold h5 mb-0">{{ $product->price }} руб.</p>
                                     <a href="{{ route('products.show', $product) }}" class="btn btn-primary">Подробнее</a>
                                 </div>
-                                <p class="card-text text-muted mt-2">{{ Str::limit($product->description, 100) }}</p>
-                                <p class="card-text text-muted mt-2">Категория: {{ $product->category }}</p>
+                                <p class="card-text text-muted mt-2">{{ Str::limit($product->description, 70) }}</p>
+                                @if($product->categories->count() > 0)
+                                    <p class="card-text text-muted mt-2">
+                                        @foreach($product->categories->pluck('name') as $category)
+                                            <span class="badge bg-primary ms-2">{{ $category }}</span>
+                                        @endforeach
+                                    </p>
+                                @endif
                             </div>
                         </div>
                     </div>

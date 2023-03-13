@@ -63,7 +63,7 @@ class CartController extends Controller
         return redirect()->route('products.index')->with('success', 'Товар успешно добавлен в корзину!');
     }
 
-    public function remove(Request $request, Product $product): RedirectResponse
+    public function remove(Product $product): RedirectResponse
     {
         $user = Auth::user();
         $cart = Cart::whereUserId($user->id)->first();
@@ -104,9 +104,7 @@ class CartController extends Controller
         $user = Auth::user();
         $cart = Cart::whereUserId($user->id)->first();
 
-        if ($cart) {
-            $cart->items()->delete();
-        }
+        $cart?->items()->delete();
 
         Cache::forget('user-cart-' . $user->id);
 

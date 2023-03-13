@@ -4,32 +4,34 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Cart extends Model
 {
     use HasFactory;
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function items()
+    public function items(): HasMany
     {
         return $this->hasMany(CartItem::class);
     }
 
-    public function hasProduct(Product $product)
+    public function hasProduct(Product $product): bool
     {
         return $this->items()->where('product_id', $product->id)->exists();
     }
 
-    public function getCartItem(Product $product)
+    public function getCartItem(Product $product): Model|HasMany|null
     {
         return $this->items()->where('product_id', $product->id)->first();
     }
 
-    public function getTotalPrice()
+    public function getTotalPrice(): float|int
     {
         $totalPrice = 0;
 

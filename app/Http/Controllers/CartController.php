@@ -6,13 +6,17 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
 class CartController extends Controller
 {
-    public function index()
+    public function index(): View|\Illuminate\Foundation\Application|Factory|Application
     {
         $user = Auth::user();
         $cart = Cache::remember('user-cart-' . $user->id, 3600, function () use ($user) {
@@ -33,7 +37,7 @@ class CartController extends Controller
         return view('cart.index', compact('cartItems', 'totalPrice'));
     }
 
-    public function add(Request $request, Product $product)
+    public function add(Request $request, Product $product): RedirectResponse
     {
         $validatedData = $request->validate([
             'quantity' => 'required|numeric|min:1'
@@ -59,7 +63,7 @@ class CartController extends Controller
         return redirect()->route('products.index')->with('success', 'Product added to cart successfully!');
     }
 
-    public function remove(Request $request, Product $product)
+    public function remove(Request $request, Product $product): RedirectResponse
     {
         $user = Auth::user();
         $cart = Cart::whereUserId($user->id)->first();
@@ -75,7 +79,7 @@ class CartController extends Controller
         return redirect()->route('carts.show')->with('success', 'Product removed from cart successfully!');
     }
 
-    public function update(Request $request, Product $product)
+    public function update(Request $request, Product $product): RedirectResponse
     {
         $validatedData = $request->validate([
             'quantity' => 'required|numeric|min:1'
@@ -95,7 +99,7 @@ class CartController extends Controller
         return redirect()->route('carts.show')->with('success', 'Cart updated successfully!');
     }
 
-    public function clear()
+    public function clear(): RedirectResponse
     {
         $user = Auth::user();
         $cart = Cart::whereUserId($user->id)->first();
@@ -109,32 +113,28 @@ class CartController extends Controller
         return redirect()->route('cart.index')->with('success', 'Cart cleared successfully!');
     }
 
-    public function checkout()
+    public function checkout(): Factory|View|\Illuminate\Foundation\Application|RedirectResponse|Application
     {
-        // получить пользователя и корзину
         $user = Auth::user();
+
         $cart = Cache::remember('user-cart-' . $user->id, 3600, function () use ($user) {
             return Cart::with(['items' => function($query) {
                 $query->with('product');
             }])->withCount('items')->where('user_id', $user->id)->first();
         });
 
-        // если корзина пустая, перенаправить на страницу корзины
         if (!$cart) {
             return redirect()->route('cart.index')->with('error', 'Cart is empty!');
         }
 
-        // получить список товаров в корзине и общую стоимость
         $cartItems = $cart->items;
         $totalPrice = $cart->getTotalPrice();
 
-        // передать список товаров и общую стоимость в представление checkout.blade.php
         return view('cart.checkout', compact('cartItems', 'totalPrice'));
     }
 
-    public function placeOrder(Request $request)
+    public function placeOrder(Request $request): RedirectResponse
     {
-        // Получаем пользователя и корзину
         $user = Auth::user();
         $cart = Cache::remember('user-cart-' . $user->id, 3600, function () use ($user) {
             return Cart::with(['items' => function ($query) {
@@ -142,12 +142,10 @@ class CartController extends Controller
             }])->withCount('items')->where('user_id', $user->id)->first();
         });
 
-        // Если корзина пустая, перенаправляем на страницу корзины
         if (!$cart || $cart->items_count === 0) {
             return redirect()->route('cart.index')->with('error', 'Cart is empty!');
         }
 
-        // Создаем новый заказ и заполняем его поля
         $order = new Order();
         $order->user_id = $user->id;
         $order->total_price = $cart->getTotalPrice();
@@ -155,12 +153,10 @@ class CartController extends Controller
         $order->customer_email = $request->input('customer_email');
         $order->shipping_address = $request->input('shipping_address');
         $order->payment_method = $request->input('payment_method');
-        $order->status = 'Ожидает'; // Устанавливаем статус заказа
+        $order->status = 'Ожидает';
 
-        // Сохраняем заказ в базу данных
         $order->save();
 
-        // Добавляем каждый товар из корзины как отдельный OrderItem в базу данных
         foreach ($cart->items as $cartItem) {
             $product = $cartItem->product;
             $quantity = $cartItem->quantity;
@@ -173,11 +169,9 @@ class CartController extends Controller
             $orderItem->save();
         }
 
-        // Очищаем корзину пользователя
         $cart->items()->delete();
         Cache::forget('user-cart-' . $user->id);
 
-        // Перенаправляем на страницу заказов с сообщением об успехе
         return redirect()->route('orders.index')->with('success', 'Your order has been placed successfully!');
     }
 }

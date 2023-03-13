@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): View|\Illuminate\Foundation\Application|Factory|Application
     {
         $request->validate([
             'category' => 'nullable|string|regex:/^[a-zA-Z0-9_-]+$/',
@@ -35,7 +38,7 @@ class ProductController extends Controller
         ]);
     }
 
-    public function show(Product $product)
+    public function show(Product $product): View|\Illuminate\Foundation\Application|Factory|Application
     {
         return view('products.show', compact('product'));
     }

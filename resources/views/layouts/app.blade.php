@@ -63,6 +63,10 @@
                                     {{ __('Выход') }}
                                 </a>
 
+                                @if(Auth::check() && Auth::user()->roles()->whereName('admin')->exists())
+                                    <a class="dropdown-item" href="{{ route('admin.index') }}">Админ-панель</a>
+                                @endif
+
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>

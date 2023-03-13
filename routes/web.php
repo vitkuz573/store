@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => redirect()->route('products.index'));
 
-// Protected cart routes for authenticated users
+// Защищенные маршруты для аутентифицированных пользователей
 Route::middleware(['auth'])->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::get('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
@@ -45,9 +45,9 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(fun
     Route::resource('products', AdminProductController::class)->except('show');
 });
 
-// Public routes for products and categories
+// Публичные маршруты для товаров и категорий
 Route::resource('products', ProductController::class)->only(['index', 'show']);
 Route::get('/categories', [CategoryController::class, 'index']);
 
-// Default authentication routes
+// Стандартные маршруты аутентификации
 Auth::routes();

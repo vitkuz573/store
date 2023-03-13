@@ -31,7 +31,7 @@ class Cart extends Model
 
     public function getCartItem(Product $product): Model|HasMany|null
     {
-        return $this->items()->where('product_id', $product->id)->first();
+        return $this->items()->whereProductId($product->id)->first();
     }
 
     public function getTotalPrice(): float|int
@@ -64,8 +64,11 @@ class Cart extends Model
     public function updateProductQuantity(Product $product, $quantity)
     {
         $cartItem = $this->getCartItem($product);
-        $cartItem->quantity = $quantity;
-        $cartItem->save();
+
+        if ($cartItem) {
+            $cartItem->quantity = $quantity;
+            $cartItem->save();
+        }
     }
 
     public function removeProduct(Product $product)

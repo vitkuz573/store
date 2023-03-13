@@ -31,7 +31,11 @@
                                 </td>
                                 <td class="item-price">{{ $cartItem->product->price }} руб.</td>
                                 <td class="item-quantity">
-                                    <input type="number" name="quantity" min="1" max="{{ $cartItem->product->stock }}" value="{{ $cartItem->quantity }}" data-product-id="{{ $cartItem->product->id }}">
+                                    <form class="update-form">
+                                        @csrf
+                                        <input type="hidden" name="product_id" value="{{ $cartItem->product->id }}">
+                                        <input type="number" name="quantity" min="1" max="{{ $cartItem->product->stock }}" value="{{ $cartItem->quantity }}" data-product-id="{{ $cartItem->product->id }}" class="item-quantity">
+                                    </form>
                                 </td>
                                 <td class="item-total item-total-{{ $cartItem->product->id }}">{{ $cartItem->product->price * $cartItem->quantity }} руб.</td>
                                 <td class="text-center">

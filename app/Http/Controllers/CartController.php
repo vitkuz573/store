@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -79,24 +80,43 @@ class CartController extends Controller
         return redirect()->route('carts.show')->with('success', 'Товар успешно удален из корзины!');
     }
 
-    public function update(Request $request, Product $product): RedirectResponse
+    public function update(Request $request, $productId)
     {
-        $validatedData = $request->validate([
-            'quantity' => 'required|numeric|min:1'
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'quantity' => 'required|numeric|min:1'
+            ]);
 
-        $user = Auth::user();
-        $cart = Cart::whereUserId($user->id)->first();
+            $user = Auth::user();
+            $cart = Cart::whereUserId($user->id)->first();
 
-        if (!$cart) {
-            return redirect()->route('products.index')->with('error', 'Cart is empty!');
+            if (!$cart) {
+                return response()->json(['error' => 'Cart is empty!']);
+            }
+
+            $product = Product::find($productId);
+
+            if (!$product) {
+                return response()->json(['error' => 'Product not found!']);
+            }
+
+            $cart->updateProductQuantity($product, $validatedData['quantity']);
+
+            Cache::forget('user-cart-' . $user->id);
+
+            $updatedCartItem = $cart->items()->whereProductId($productId)->first();
+
+            if (!$updatedCartItem) {
+                return response()->json(['error' => 'Item not found!']);
+            }
+
+            return response()->json([
+                'productId' => $productId,
+                'quantity' => $updatedCartItem->quantity
+            ]);
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
         }
-
-        $cart->updateProductQuantity($product, $validatedData['quantity']);
-
-        Cache::forget('user-cart-' . $user->id);
-
-        return redirect()->route('carts.show')->with('success', 'Корзина успешно обновлена!');
     }
 
     public function clear(): RedirectResponse

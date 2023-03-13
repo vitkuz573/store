@@ -29,7 +29,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
     Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
-    Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
+    Route::put('/cart/update/{productId}', [CartController::class, 'update'])->name('cart.update');
     Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('checkout');
     Route::post('/cart/place-order', [CartController::class, 'placeOrder'])->name('checkout.place-order');
     Route::resource('orders', OrderController::class)->only(['index', 'show']);

@@ -24,7 +24,7 @@
 
                             <div class="form-group mb-0 mt-2">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Создать') }}
+                                    {{ __('Добавить категорию') }}
                                 </button>
                             </div>
                         </form>

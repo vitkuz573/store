@@ -187,6 +187,8 @@ class CartController extends Controller
             $orderItem->quantity = $quantity;
             $orderItem->price = $price;
             $orderItem->save();
+
+            $product->decrement('stock', $quantity);
         }
 
         $cart->items()->delete();

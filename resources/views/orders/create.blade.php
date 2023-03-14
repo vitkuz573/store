@@ -10,7 +10,7 @@
 
     <div class="row mx-5">
         <div class="col-md-8">
-            <form method="POST" action="{{ route('checkout.place-order') }}">
+            <form method="POST" action="{{ route('orders.store') }}">
                 @csrf
                 <div class="form-group">
                     <label for="name">Имя</label>

@@ -55,7 +55,7 @@
                 <div class="text-right mt-4">
                     <a href="{{ route('cart.clear') }}" class="btn btn-outline-danger mx-2" onclick="return confirm('Вы уверены, что хотите очистить корзину?')">Очистить корзину</a>
                     <a href="{{ route('products.index') }}" class="btn btn-secondary mx-2">Продолжить покупки</a>
-                    <a href="{{ route('checkout') }}" class="btn btn-primary mx-2 my-2 my-md-0">Перейти к оформлению</a>
+                    <a href="{{ route('orders.create') }}" class="btn btn-primary mx-2 my-2 my-md-0">Перейти к оформлению</a>
                 </div>
 
             @else

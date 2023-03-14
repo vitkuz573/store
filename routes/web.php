@@ -26,14 +26,12 @@ Route::get('/', fn () => redirect()->route('products.index'));
 
 // Защищенные маршруты для аутентифицированных пользователей
 Route::middleware(['auth'])->group(function () {
-    Route::match(['get', 'delete'], '/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::get('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
     Route::delete('/cart/remove/{productId}', [CartController::class, 'remove'])->name('cart.remove');
     Route::put('/cart/update/{productId}', [CartController::class, 'update'])->name('cart.update');
-    Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('checkout');
-    Route::post('/cart/place-order', [CartController::class, 'placeOrder'])->name('checkout.place-order');
-    Route::resource('orders', OrderController::class)->only(['index', 'show']);
+    Route::resource('orders', OrderController::class)->only(['index', 'show', 'create', 'store']);
 });
 
 Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(function () {

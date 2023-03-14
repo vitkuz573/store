@@ -83,8 +83,6 @@ class ProductSeeder extends Seeder
                     'stock' => $faker->numberBetween(2, 100),
                     'is_new' => $faker->boolean(),
                     'image_url' => $faker->imageUrl(randomize: false, word: $product['name'], gray: true),
-                    'created_at' => now(),
-                    'updated_at' => now(),
                 ]);
 
                 $categoryItem->products()->save($productItems);

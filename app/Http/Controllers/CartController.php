@@ -92,13 +92,13 @@ class CartController extends Controller
             $cart = Cart::whereUserId($user->id)->first();
 
             if (!$cart) {
-                return response()->json(['error' => 'Cart is empty!']);
+                return response()->json(['error' => 'Корзина пуста!']);
             }
 
             $product = Product::find($productId);
 
             if (!$product) {
-                return response()->json(['error' => 'Product not found!']);
+                return response()->json(['error' => 'Товар не найден!']);
             }
 
             $cart->updateProductQuantity($product, $validatedData['quantity']);
@@ -108,7 +108,7 @@ class CartController extends Controller
             $updatedCartItem = $cart->items()->whereProductId($productId)->first();
 
             if (!$updatedCartItem) {
-                return response()->json(['error' => 'Item not found!']);
+                return response()->json(['error' => 'Элемент не найден!']);
             }
 
             return response()->json([

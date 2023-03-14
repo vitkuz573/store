@@ -82,7 +82,7 @@ class ProductSeeder extends Seeder
                     'price' => $product['price'],
                     'stock' => $faker->numberBetween(0, 100),
                     'is_new' => $faker->boolean(),
-                    'image_url' => $faker->imageUrl(),
+                    'image_url' => $faker->imageUrl(randomize: false, word: $product['name'], gray: true),
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);

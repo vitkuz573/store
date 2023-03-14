@@ -111,8 +111,8 @@ class CartController extends Controller
             }
 
             return response()->json([
-                'productId' => $productId,
-                'quantity' => $updatedCartItem->quantity
+                'quantity' => $updatedCartItem->quantity,
+                'totalPrice' => $cart->getTotalPrice()
             ]);
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()]);

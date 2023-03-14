@@ -1,62 +1,76 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const updateForms = document.querySelectorAll('.update-form');
+  // Обработчик события изменения количества товара в корзине
+  function handleQuantityChange(event) {
+    const form = event.target.closest('.update-form');
+    const productId = form.querySelector('[name="product_id"]').value;
+    const quantity = event.target.value;
+    const itemPriceElem = form.closest('tr').querySelector('.item-price');
+    const itemTotalElem = form.closest('tr').querySelector('.item-total');
 
-    updateForms.forEach(form => {
-        const input = form.querySelector('.item-quantity');
-        const productId = input.dataset.productId;
+    const totalElem = document.querySelector('.total-price');
 
-        const handleQuantityChange = debounce(() => {
-            const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    console.log(`Product ID: ${productId}, New Quantity: ${quantity}`);
 
-            const formData = new FormData(form);
-            formData.append('_method', 'PUT');
+    // Отправляем AJAX запрос на сервер для обновления количества товара
+    fetch(`/cart/update/${productId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': form.querySelector('[name="_token"]').value,
+      },
+      body: JSON.stringify({
+        product_id: productId,
+        quantity: quantity,
+      }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Обновляем данные в корзине и на странице
+        const itemPrice = parseFloat(itemPriceElem.innerText);
+        const itemTotal = itemPrice * data.quantity;
+        if (itemTotalElem) {
+          itemTotalElem.innerText = `${itemTotal.toFixed(0)} руб.`;
+        }
+        if (totalElem) {
+          totalElem.innerText = `${data.totalPrice.toFixed(0)} руб.`;
+        }
+        console.log(data);
+      })
+      .catch(error => console.error(error));
+  }
 
-            fetch(`/cart/update/${productId}`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': token
-                },
-                body: formData
-            })
-                .then(response => response.json())
-                .then(data => {
-                    // update cart item quantity and total price
-                    const cartItem = document.getElementById(`cart-item-${productId}`);
-                    const itemPrice = cartItem.querySelector('.item-price').textContent;
-                    const itemTotal = cartItem.querySelector('.item-total');
+  // Обработчик события удаления товара из корзины
+  function handleRemoveFromCart(event) {
+    const productId = event.target.getAttribute('data-product-id');
+    const itemElem = document.querySelector(`#cart-item-${productId}`);
+    const totalElem = document.querySelector('.total-price');
 
-                    itemTotal.textContent = `${parseFloat(itemPrice) * data.quantity} руб.`;
+    fetch(`/cart/remove/${productId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+      },
+    })
+      .then(response => response.json())
+      .then(data => {
+        itemElem.remove();
+        if (totalElem) {
+          totalElem.innerText = `${data.totalPrice.toFixed(0)} руб.`;
+        }
+        console.log(data);
+      })
+      .catch(error => console.error(error));
+  }
 
-                    // update total price
-                    const itemTotalElements = document.querySelectorAll('.item-total');
-                    let totalPrice = 0;
+  // Добавляем обработчики событий для элементов на странице
+  const quantityInputs = document.querySelectorAll('.item-quantity input[type="number"]');
+  quantityInputs.forEach(input => {
+    input.addEventListener('change', handleQuantityChange);
+  });
 
-                    itemTotalElements.forEach(element => {
-                        totalPrice += parseFloat(element.textContent);
-                    });
-
-                    document.querySelector('.total-price').textContent = `${totalPrice} руб.`;
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        }, 500);
-
-        input.addEventListener('change', handleQuantityChange);
-        input.addEventListener('keydown', handleQuantityChange);
-    });
+  const removeButtons = document.querySelectorAll('.remove-from-cart');
+  removeButtons.forEach(button => {
+    button.addEventListener('click', handleRemoveFromCart);
+  });
 });
-
-function debounce(func, wait) {
-    let timeout;
-
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}

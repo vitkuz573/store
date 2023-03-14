@@ -10,6 +10,7 @@ use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -80,7 +81,7 @@ class CartController extends Controller
         return redirect()->route('carts.show')->with('success', 'Товар успешно удален из корзины!');
     }
 
-    public function update(Request $request, $productId)
+    public function update(Request $request, $productId): JsonResponse
     {
         try {
             $validatedData = $request->validate([

@@ -43,4 +43,11 @@ class AdminOrderController extends Controller
 
         return redirect()->route('admin.orders.index');
     }
+
+    public function destroy(Order $order)
+    {
+        $order->delete();
+
+        return redirect()->route('admin.orders.index')->with('success', __('Заказ успешно удален.'));
+    }
 }

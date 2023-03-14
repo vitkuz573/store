@@ -40,7 +40,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(fun
         return view('admin.index');
     })->name('index');
 
-    Route::resource('users', AdminUserController::class)->except(['show', 'create', 'store']);
+    Route::resource('users', AdminUserController::class)->except(['show']);
     Route::resource('orders', AdminOrderController::class)->except(['create', 'store']);
     Route::resource('products', AdminProductController::class)->except('show');
 });

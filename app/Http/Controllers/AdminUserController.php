@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AdminUserController extends Controller
 {
@@ -17,6 +18,13 @@ class AdminUserController extends Controller
         $users = User::all();
 
         return view('admin.users.index', compact('users'));
+    }
+
+    public function create()
+    {
+        $roles = Role::all();
+
+        return view('admin.users.create', compact('roles'));
     }
 
     public function edit(User $user): View|\Illuminate\Foundation\Application|Factory|Application
@@ -49,5 +57,33 @@ class AdminUserController extends Controller
 
         return redirect()->route('admin.users.index')
             ->with('success', __('Данные пользователя успешно обновлены.'));
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|confirmed|min:8',
+            'role' => 'required|exists:roles,id'
+        ]);
+
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
+
+        $role = Role::findOrFail($data['role']);
+        $user->roles()->attach($role);
+
+        return redirect()->route('admin.users.index');
+    }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+
+        return redirect()->route('admin.users.index');
     }
 }

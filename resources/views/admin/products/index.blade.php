@@ -14,29 +14,35 @@
 
                         <table class="table">
                             <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Название</th>
-                                <th>Цена</th>
-                                <th>Действия</th>
-                            </tr>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Название</th>
+                                    <th>Категории</th>
+                                    <th>Цена</th>
+                                    <th>Действия</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            @foreach ($products as $product)
+                                @foreach ($products as $product)
                                 <tr>
                                     <td>{{ $product->id }}</td>
                                     <td>{{ $product->name }}</td>
-                                    <td>{{ $product->price }}</td>
+                                    <td>
+                                        @foreach ($product->categories as $category)
+                                            {{ $category->name }}{{ !$loop->last ? ', ' : '' }}
+                                        @endforeach
+                                    </td>
+                                    <td>{{ $product->price }} руб.</td>
                                     <td>
                                         <a href="{{ route('admin.products.edit', $product) }}" class="btn btn-sm btn-primary ms-4">{{ __('Редактировать') }}</a>
                                         <form action="{{ route('admin.products.destroy', $product) }}" method="POST" style="display: inline-block;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger">{{ __('Удалить') }}</button>
+                                            <button type="submit" class="btn btn-sm btn-danger ms-1">{{ __('Удалить') }}</button>
                                         </form>
                                     </td>
                                 </tr>
-                            @endforeach
+                                @endforeach
                             </tbody>
                         </table>
 

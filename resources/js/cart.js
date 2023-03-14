@@ -5,21 +5,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const quantity = event.target.value;
     const itemPriceElem = form.closest('tr').querySelector('.item-price');
     const itemTotalElem = form.closest('tr').querySelector('.item-total');
-
     const totalElem = document.querySelector('.total-price');
+
+    const csrfToken = getCsrfToken(); // функция для получения CSRF токена из скрытого поля на форме
 
     fetch(`/cart/update/${productId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRF-Token': form.querySelector('[name="_token"]').value,
+        'X-CSRF-Token': csrfToken,
       },
       body: JSON.stringify({
         product_id: productId,
         quantity: quantity,
       }),
     })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
       .then(data => {
         const itemPrice = parseFloat(itemPriceElem.innerText);
         const itemTotal = itemPrice * data.quantity;
@@ -38,14 +44,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const itemElem = document.querySelector(`#cart-item-${productId}`);
     const totalElem = document.querySelector('.total-price');
 
+    const csrfToken = getCsrfToken(); // function to get CSRF token from hidden form input
+
     fetch(`/cart/remove/${productId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+        'X-CSRF-Token': csrfToken,
       },
     })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
       .then(data => {
         itemElem.remove();
         if (totalElem) {
@@ -64,4 +77,16 @@ document.addEventListener('DOMContentLoaded', () => {
   removeButtons.forEach(button => {
     button.addEventListener('click', handleRemoveFromCart);
   });
+
+  function getCsrfToken() {
+    const csrfTokenInput = document.querySelector('input[name="_token"]');
+    if (!csrfTokenInput) {
+      throw new Error('CSRF token input not found');
+    }
+    const csrfToken = csrfTokenInput.value;
+    if (!csrfToken) {
+      throw new Error('CSRF token is empty');
+    }
+    return csrfToken;
+  }
 });

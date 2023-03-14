@@ -35,6 +35,14 @@
                     </li>
                 </ul>
 
+                <!-- Center Side of Navbar -->
+                <div class="d-flex">
+                    <form class="d-flex" method="GET" action="{{ route('products.index') }}">
+                        <input class="form-control me-2" type="search" name="search" placeholder="Поиск товара" aria-label="Поиск товара" value="{{ request('search') }}">
+                        <button class="btn btn-outline-primary" type="submit">Поиск</button>
+                    </form>
+                </div>
+
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ms-auto">
                     <!-- Authentication Links -->

@@ -11,12 +11,12 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-
     public function index(Request $request): View|Application|Factory
     {
         $selectedCategory = strtolower($request->input('category'));
         $minPrice = $request->input('min_price');
         $maxPrice = $request->input('max_price');
+        $search = $request->input('search');
 
         $categories = Category::has('products')->get();
 
@@ -34,6 +34,10 @@ class ProductController extends Controller
 
         if ($maxPrice) {
             $productsQuery->where('price', '<=', $maxPrice);
+        }
+
+        if ($search) {
+            $productsQuery->where('name', 'LIKE', '%' . $search . '%');
         }
 
         $products = $productsQuery->with('categories')->orderBy('created_at', 'desc')->paginate(8);

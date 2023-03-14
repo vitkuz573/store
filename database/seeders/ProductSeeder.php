@@ -41,7 +41,7 @@ class ProductSeeder extends Seeder
             'Кабели и разъемы' => [
                 ['name' => 'Belkin CAT5e Snagless UTP Patch Cable', 'description' => 'Кабель категории 5e для подключения сетевого оборудования', 'price' => '226'],
                 ['name' => 'D-Link NCB-C6SGRYR-305-24 Cat6 FTP STP Networking Cable 305M', 'description' => 'Кабель категории 6 для подключения сетевого оборудования', 'price' => '7861'],
-                ['name' => 'TP-Link TL-SF1005D 5-Port Fast Ethernet Switch', 'description' => 'Коммутатор с 5 портами Fast Ethernet', 'price' => '695'],
+                ['name' => 'Belkin A3L791-01-BLK 1-Feet CAT5E RJ45 Patch Cable', 'description' => 'Коммутатор с 5 портами Fast Ethernet', 'price' => '175'],
             ],
             'Wi-Fi оборудование' => [
                 ['name' => 'TP-Link Archer C9 AC1900', 'description' => 'Wi-Fi маршрутизатор с поддержкой стандарта 802.11ac и скоростью до 1900 Мбит/с', 'price' => '1600'],

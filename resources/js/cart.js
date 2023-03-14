@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const csrfToken = getCsrfToken(); // функция для получения CSRF токена из скрытого поля на форме
 
-    fetch(`/cart/update/${productId}`, {
+    fetch(`/cart/${productId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const csrfToken = getCsrfToken(); // function to get CSRF token from hidden form input
 
-    fetch(`/cart/remove/${productId}`, {
+    fetch(`/cart/${productId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

@@ -53,7 +53,11 @@
                 </div>
 
                 <div class="text-right mt-4">
-                    <a href="{{ route('cart.clear') }}" class="btn btn-outline-danger mx-2" onclick="return confirm('Вы уверены, что хотите очистить корзину?')">Очистить корзину</a>
+                    <form action="{{ route('cart.destroy', ['productId' => 0]) }}" method="POST" class="d-inline-block">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-outline-danger mx-2" onclick="return confirm('Вы уверены, что хотите очистить корзину?')">Очистить корзину</button>
+                    </form>
                     <a href="{{ route('products.index') }}" class="btn btn-secondary mx-2">Продолжить покупки</a>
                     <a href="{{ route('orders.create') }}" class="btn btn-primary mx-2 my-2 my-md-0">Перейти к оформлению</a>
                 </div>

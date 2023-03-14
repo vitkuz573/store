@@ -65,26 +65,6 @@ class CartController extends Controller
         return redirect()->route('products.index')->with('success', 'Товар успешно добавлен в корзину!');
     }
 
-    public function remove($productId): JsonResponse
-    {
-        $user = Auth::user();
-        $cart = Cart::whereUserId($user->id)->first();
-
-        if (!$cart) {
-            return response()->json(['error' => 'Корзина пуста!']);
-        }
-
-        $cart->removeProduct($productId);
-
-        Cache::forget('user-cart-' . $user->id);
-
-        $totalPrice = $cart->getTotalPrice();
-
-        return response()->json([
-            'totalPrice' => $totalPrice
-        ]);
-    }
-
     public function update(Request $request, $productId): JsonResponse
     {
         try {
@@ -124,15 +104,25 @@ class CartController extends Controller
         }
     }
 
-    public function clear(): RedirectResponse
+    public function destroy($productId): JsonResponse|RedirectResponse
     {
         $user = Auth::user();
         $cart = Cart::whereUserId($user->id)->first();
 
-        $cart?->items()->delete();
+        if (!$cart) {
+            return redirect()->route('cart.index')->with('error', 'Корзина пуста!');
+        }
 
-        Cache::forget('user-cart-' . $user->id);
-
-        return redirect()->route('cart.index')->with('success', 'Корзина успешно очищена!');
+        if ($productId != 0) {
+            $cart->removeProduct($productId);
+            Cache::forget('user-cart-' . $user->id);
+            return response()->json([
+                'totalPrice' => $cart->getTotalPrice()
+            ]);
+        } else {
+            $cart->items()->delete();
+            Cache::forget('user-cart-' . $user->id);
+            return redirect()->route('cart.index')->with('success', 'Корзина успешно очищена!');
+        }
     }
 }

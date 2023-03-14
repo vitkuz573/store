@@ -26,11 +26,8 @@ Route::get('/', fn () => redirect()->route('products.index'));
 
 // Защищенные маршруты для аутентифицированных пользователей
 Route::middleware(['auth'])->group(function () {
-    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-    Route::get('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
-    Route::delete('/cart/remove/{productId}', [CartController::class, 'remove'])->name('cart.remove');
-    Route::put('/cart/update/{productId}', [CartController::class, 'update'])->name('cart.update');
+    Route::resource('cart', CartController::class)->only(['index', 'update', 'destroy'])->parameters(['cart' => 'productId']);
     Route::resource('orders', OrderController::class)->only(['index', 'show', 'create', 'store']);
 });
 

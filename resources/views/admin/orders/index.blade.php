@@ -32,7 +32,8 @@
                                     <td>{{ $order->status }}</td>
                                     <td>{{ $order->created_at }}</td>
                                     <td>
-                                        <a href="{{ route('admin.orders.edit', $order) }}" class="btn btn-primary">{{ __('Редактировать') }}</a>
+                                        <a href="{{ route('admin.orders.show', $order) }}" class="btn btn-secondary">{{ __('Просмотреть') }}</a>
+                                        <a href="{{ route('admin.orders.edit', $order) }}" class="btn btn-primary ms-1">{{ __('Редактировать') }}</a>
                                         <form action="{{ route('admin.orders.destroy', $order) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')

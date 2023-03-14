@@ -6,6 +6,8 @@ use App\Models\Order;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class AdminOrderController extends Controller
 {
@@ -20,7 +22,7 @@ class AdminOrderController extends Controller
     {
         $orderItems = $order->items;
 
-        return view('admin.orders.show', compact('order', 'orderItems'));
+        return view('orders.show', compact('order', 'orderItems'));
     }
 
     public function edit(Order $order): View|\Illuminate\Foundation\Application|Factory|Application
@@ -28,5 +30,17 @@ class AdminOrderController extends Controller
         $statuses = ['Ожидает', 'В обработке', 'Доставляется', 'Доставлен'];
 
         return view('admin.orders.edit', compact('order', 'statuses'));
+    }
+
+    public function update(Request $request, Order $order): RedirectResponse
+    {
+        $validatedData = $request->validate([
+            'status' => ['required', 'in:Ожидает,В обработке,Доставляется,Доставлен'],
+        ]);
+
+        $order->status = $validatedData['status'];
+        $order->save();
+
+        return redirect()->route('admin.orders.index');
     }
 }

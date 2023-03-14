@@ -11,27 +11,39 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index(Request $request): View|\Illuminate\Foundation\Application|Factory|Application
-    {
 
-        $category = strtolower($request->input('category'));
+    public function index(Request $request): View|Application|Factory
+    {
+        $selectedCategory = strtolower($request->input('category'));
+        $minPrice = $request->input('min_price');
+        $maxPrice = $request->input('max_price');
 
         $categories = Category::has('products')->get();
 
         $productsQuery = Product::query();
 
-        if ($category) {
-            $productsQuery->whereHas('categories', function ($query) use ($category) {
-                $query->whereName($category);
+        if ($selectedCategory) {
+            $productsQuery->whereHas('categories', function ($query) use ($selectedCategory) {
+                $query->whereName($selectedCategory);
             });
         }
 
-        $products = $productsQuery->with('categories')->orderBy('created_at', 'desc')->paginate(9);
+        if ($minPrice) {
+            $productsQuery->where('price', '>=', $minPrice);
+        }
+
+        if ($maxPrice) {
+            $productsQuery->where('price', '<=', $maxPrice);
+        }
+
+        $products = $productsQuery->with('categories')->orderBy('created_at', 'desc')->paginate(8);
 
         return view('products.index', [
             'products' => $products,
             'categories' => $categories,
-            'selectedCategory' => $category,
+            'selectedCategory' => $selectedCategory,
+            'minPrice' => $minPrice,
+            'maxPrice' => $maxPrice,
         ]);
     }
 

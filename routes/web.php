@@ -28,7 +28,7 @@ Route::get('/', fn () => redirect()->route('products.index'));
 Route::middleware(['auth'])->group(function () {
     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
     Route::resource('cart', CartController::class)->only(['index', 'update', 'destroy'])->parameters(['cart' => 'productId']);
-    Route::resource('orders', OrderController::class)->only(['index', 'show', 'create', 'store']);
+    Route::resource('orders', OrderController::class)->except(['edit', 'update', 'destroy']);
 });
 
 Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(function () {

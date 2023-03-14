@@ -18,8 +18,8 @@
                         <form method="POST" action="{{ route('cart.add', $product) }}">
                             @csrf
                             <div class="input-group mb-3">
-                                <input type="number" name="quantity" class="form-control" value="1" min="1" max="{{ $product->stock }}" aria-label="Quantity" required>
-                                <button type="submit" class="btn btn-primary px-4 rounded-pill mt-3 mt-md-0 ms-md-3">Добавить в корзину</button>
+                                <input type="number" name="quantity" class="form-control" value="{{ $product->stock > 0 ? 1 : 0 }}" min="{{ $product->stock > 0 ? 1 : 0 }}" max="{{ $product->stock }}" aria-label="Quantity" required>
+                                <button type="submit" class="btn btn-primary px-4 rounded-pill mt-3 mt-md-0 ms-md-3" {{ $product->stock <= 0 ? 'disabled' : '' }}>Добавить в корзину</button>
                                 @if ($errors->has('quantity'))
                                     <div class="invalid-feedback">
                                         {{ $errors->first('quantity') }}
@@ -28,6 +28,11 @@
                             </div>
                         </form>
                     </div>
+                    @if ($product->stock <= 0)
+                        <p class="text-danger mb-4">Нет в наличии</p>
+                    @else
+                        <p class="text-success mb-4">В наличии</p>
+                    @endif
                     <a href="{{ route('products.index') }}" class="btn btn-outline-primary px-4 rounded-pill mt-auto">Назад к продуктам</a>
                 </div>
             </div>

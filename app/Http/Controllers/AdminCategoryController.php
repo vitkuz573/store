@@ -18,7 +18,7 @@ class AdminCategoryController extends Controller
         return view('admin.categories.index', compact('categories'));
     }
 
-    public function create()
+    public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         return view('admin.categories.create');
     }
@@ -34,7 +34,7 @@ class AdminCategoryController extends Controller
             'name' => $request->input('name'),
         ]);
 
-        return redirect()->route('admin.categories.index')->with('success', 'Категория успешно создана.');
+        return redirect()->route('admin.categories.index')->with('success', __('Категория успешно создана.'));
     }
 
     public function update(Request $request, Category $category): RedirectResponse
@@ -43,7 +43,7 @@ class AdminCategoryController extends Controller
             'name' => $request->input('name'),
         ]);
 
-        return redirect()->route('admin.categories.index')->with('success', 'Категория успешно обновлена.');
+        return redirect()->route('admin.categories.index')->with('success', __('Категория успешно обновлена.'));
     }
 
     public function destroy(Category $category): RedirectResponse

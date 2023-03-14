@@ -26,7 +26,7 @@ class Cart extends Model
 
     public function hasProduct(Product $product): bool
     {
-        return $this->items()->where('product_id', $product->id)->exists();
+        return $this->items()->whereProductId($product->id)->exists();
     }
 
     public function getCartItem(Product $product): Model|HasMany|null

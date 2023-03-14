@@ -20,7 +20,7 @@ class AdminUserController extends Controller
         return view('admin.users.index', compact('users'));
     }
 
-    public function create()
+    public function create(): View|\Illuminate\Foundation\Application|Factory|Application
     {
         $roles = Role::all();
 
@@ -59,7 +59,7 @@ class AdminUserController extends Controller
             ->with('success', __('Данные пользователя успешно обновлены.'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $data = $request->validate([
             'name' => 'required|string|max:255',
@@ -80,7 +80,7 @@ class AdminUserController extends Controller
         return redirect()->route('admin.users.index');
     }
 
-    public function destroy(User $user)
+    public function destroy(User $user): RedirectResponse
     {
         $user->delete();
 

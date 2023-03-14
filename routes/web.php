@@ -49,7 +49,6 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(fun
 
 // Публичные маршруты
 Route::resource('products', ProductController::class)->only(['index', 'show']);
-Route::get('/categories', [CategoryController::class, 'index']);
 
 // Стандартные маршруты аутентификации
 Auth::routes();

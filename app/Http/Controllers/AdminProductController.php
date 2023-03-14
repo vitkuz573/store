@@ -57,7 +57,7 @@ class AdminProductController extends Controller
         return redirect()->route('admin.products.index');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $product = new Product();
         $product->name = $request['name'];

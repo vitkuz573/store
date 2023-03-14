@@ -71,9 +71,11 @@ class Cart extends Model
         }
     }
 
-    public function removeProduct(Product $product)
+    public function removeProduct($productId)
     {
+        $product = Product::find($productId);
+
         $cartItem = $this->getCartItem($product);
-        $cartItem->delete();
+        $cartItem?->delete();
     }
 }

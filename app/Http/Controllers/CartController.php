@@ -65,20 +65,24 @@ class CartController extends Controller
         return redirect()->route('products.index')->with('success', 'Товар успешно добавлен в корзину!');
     }
 
-    public function remove(Product $product): RedirectResponse
+    public function remove($productId): JsonResponse
     {
         $user = Auth::user();
         $cart = Cart::whereUserId($user->id)->first();
 
         if (!$cart) {
-            return redirect()->route('products.index')->with('error', 'Корзина пуста!');
+            return response()->json(['error' => 'Корзина пуста!']);
         }
 
-        $cart->removeProduct($product);
+        $cart->removeProduct($productId);
 
         Cache::forget('user-cart-' . $user->id);
 
-        return redirect()->route('carts.show')->with('success', 'Товар успешно удален из корзины!');
+        $totalPrice = $cart->getTotalPrice();
+
+        return response()->json([
+            'totalPrice' => $totalPrice
+        ]);
     }
 
     public function update(Request $request, $productId): JsonResponse

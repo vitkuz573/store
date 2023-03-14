@@ -18,6 +18,9 @@
                             <a href="{{ route('admin.products.index') }}" class="list-group-item list-group-item-action">
                                 <i class="fas fa-boxes mr-2"></i> {{ __('Управление товарами') }}
                             </a>
+                            <a href="{{ route('admin.categories.index') }}" class="list-group-item list-group-item-action">
+                                <i class="fas fa-boxes mr-2"></i> {{ __('Управление категориями') }}
+                            </a>
                         </div>
                     </div>
                 </div>

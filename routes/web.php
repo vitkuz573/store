@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\CartController;
@@ -42,7 +43,8 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(fun
 
     Route::resource('users', AdminUserController::class)->except(['show']);
     Route::resource('orders', AdminOrderController::class)->except(['create', 'store']);
-    Route::resource('products', AdminProductController::class)->except('show');
+    Route::resource('products', AdminProductController::class)->except(['show']);
+    Route::resource('categories', AdminCategoryController::class)->except(['show']);
 });
 
 // Публичные маршруты

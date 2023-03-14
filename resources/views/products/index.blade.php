@@ -23,6 +23,7 @@
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary mt-3">Показать</button>
+                <a href="{{ route('products.index') }}" class="btn btn-secondary mt-3 ms-2">Сбросить</a>
             </form>
         </div>
         <div class="col-md-9">

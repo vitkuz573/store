@@ -12,7 +12,7 @@
         <div class="col-12">
             @if (count($cartItems) > 0)
                 <div class="table-responsive">
-                    <table class="table table-hover">
+                    <table class="table table-hover cart-table">
                         <thead>
                         <tr>
                             <th scope="col">Продукт</th>

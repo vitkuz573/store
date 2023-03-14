@@ -13,9 +13,6 @@ class ProductController extends Controller
 {
     public function index(Request $request): View|\Illuminate\Foundation\Application|Factory|Application
     {
-        $request->validate([
-            'category' => 'nullable|string|regex:/^[a-zA-Z0-9_-]+$/',
-        ]);
 
         $category = strtolower($request->input('category'));
 

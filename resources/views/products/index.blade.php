@@ -14,13 +14,20 @@
                 </div>
 
                 <div class="form-group mt-3">
-                    <label for="category">Категория:</label>
-                    <select name="category" id="category" class="form-control">
-                        <option value="">Все категории</option>
-                        @foreach($categories as $category)
-                            <option value="{{ $category->name }}" {{ $selectedCategory === $category->name ? 'selected' : '' }}>{{ $category->name }}</option>
-                        @endforeach
-                    </select>
+                    <label for="categories">Категории:</label>
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle form-control" type="button" id="categoryDropdown" data-target="#categoryDropdownMenu" aria-haspopup="true">
+                            Выберите категории
+                        </button>
+                        <div id="categoryDropdownMenu" class="dropdown-menu checkbox-menu" aria-labelledby="categories">
+                            @foreach($categories as $category)
+                                <label class="dropdown-item">
+                                    <input type="checkbox" name="categories[]" value="{{ $category->name }}" {{ in_array($category->name, $selectedCategories) ? 'checked' : '' }}>
+                                    {{ $category->name }}
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary mt-3">Показать</button>
                 <a href="{{ route('products.index') }}" class="btn btn-secondary mt-3 ms-2">Сбросить</a>
@@ -71,4 +78,24 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('styles')
+    <style>
+        .checkbox-menu label {
+            display: block;
+            padding: 3px 10px;
+            clear: both;
+            font-weight: normal;
+            line-height: 1.42857143;
+            color: #333;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .checkbox-menu input[type="checkbox"] {
+            margin: 0 5px;
+            vertical-align: middle;
+        }
+    </style>
 @endsection

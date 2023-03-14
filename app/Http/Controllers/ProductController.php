@@ -13,7 +13,7 @@ class ProductController extends Controller
 {
     public function index(Request $request): View|Application|Factory
     {
-        $selectedCategory = strtolower($request->input('category'));
+        $selectedCategories = array_map('strtolower', $request->input('categories', []));
         $minPrice = $request->input('min_price');
         $maxPrice = $request->input('max_price');
         $search = $request->input('search');
@@ -22,9 +22,9 @@ class ProductController extends Controller
 
         $productsQuery = Product::query();
 
-        if ($selectedCategory) {
-            $productsQuery->whereHas('categories', function ($query) use ($selectedCategory) {
-                $query->whereName($selectedCategory);
+        if (!empty($selectedCategories)) {
+            $productsQuery->whereHas('categories', function ($query) use ($selectedCategories) {
+                $query->whereIn('name', $selectedCategories);
             });
         }
 
@@ -45,7 +45,7 @@ class ProductController extends Controller
         return view('products.index', [
             'products' => $products,
             'categories' => $categories,
-            'selectedCategory' => $selectedCategory,
+            'selectedCategories' => $selectedCategories,
             'minPrice' => $minPrice,
             'maxPrice' => $maxPrice,
         ]);

@@ -74,28 +74,8 @@
                 @endforelse
             </div>
             <div class="d-flex justify-content-center mt-4">
-                {{ $products->links('pagination::simple-bootstrap-4') }}
+                {{ $products->appends(['min_price' => $minPrice, 'max_price' => $maxPrice, 'categories' => $selectedCategories])->links() }}
             </div>
         </div>
     </div>
-@endsection
-
-@section('styles')
-    <style>
-        .checkbox-menu label {
-            display: block;
-            padding: 3px 10px;
-            clear: both;
-            font-weight: normal;
-            line-height: 1.42857143;
-            color: #333;
-            white-space: nowrap;
-            cursor: pointer;
-        }
-
-        .checkbox-menu input[type="checkbox"] {
-            margin: 0 5px;
-            vertical-align: middle;
-        }
-    </style>
 @endsection

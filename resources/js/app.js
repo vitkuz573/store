@@ -7,7 +7,7 @@
 import './bootstrap';
 import { createApp } from 'vue';
 
-import './cart';
+import './cart/main';
 import './products'
 
 /**

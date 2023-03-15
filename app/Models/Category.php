@@ -21,4 +21,9 @@ class Category extends Model
     {
         return $this->belongsToMany(Product::class);
     }
+
+    public function getCheckboxValueAttribute()
+    {
+        return $this->attributes['id'];
+    }
 }

@@ -13,7 +13,7 @@ class ProductController extends Controller
 {
     public function index(Request $request): View|Application|Factory
     {
-        $selectedCategories = array_map('strtolower', $request->input('categories', []));
+        $selectedCategories = $request->input('categories', []);
         $minPrice = $request->input('min_price');
         $maxPrice = $request->input('max_price');
         $search = $request->input('search');
@@ -24,7 +24,7 @@ class ProductController extends Controller
 
         if (!empty($selectedCategories)) {
             $productsQuery->whereHas('categories', function ($query) use ($selectedCategories) {
-                $query->whereIn('name', $selectedCategories);
+                $query->whereIn('categories.id', $selectedCategories);
             });
         }
 

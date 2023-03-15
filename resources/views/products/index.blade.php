@@ -22,7 +22,7 @@
                         <div id="categoryDropdownMenu" class="dropdown-menu checkbox-menu" aria-labelledby="categories">
                             @foreach($categories as $category)
                                 <label class="dropdown-item">
-                                    <input type="checkbox" name="categories[]" value="{{ $category->name }}" {{ in_array($category->name, $selectedCategories) ? 'checked' : '' }}>
+                                    <input type="checkbox" name="categories[]" value="{{ $category->id }}" {{ in_array($category->id, $selectedCategories) ? 'checked' : '' }}>
                                     {{ $category->name }}
                                 </label>
                             @endforeach

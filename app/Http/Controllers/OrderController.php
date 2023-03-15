@@ -66,6 +66,7 @@ class OrderController extends Controller
         $order->user_id = $user->id;
         $order->total_price = $cart->getTotalPrice();
         $order->customer_name = $request->input('customer_name');
+        $order->customer_phone = $request->input('customer_phone');
         $order->customer_email = $request->input('customer_email');
         $order->shipping_address = $request->input('shipping_address');
         $order->payment_method = $request->input('payment_method');

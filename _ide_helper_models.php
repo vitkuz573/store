@@ -72,6 +72,7 @@ namespace App\Models{
  * @property string $total_price
  * @property string $status
  * @property string $customer_name
+ * @property string $customer_phone
  * @property string $customer_email
  * @property string $shipping_address
  * @property string $payment_method
@@ -88,6 +89,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereCustomerEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereCustomerName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereCustomerPhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereNotes($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePaymentMethod($value)
@@ -132,45 +134,6 @@ namespace App\Models{
  * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
  */
 	class IdeHelperOrderItem {}
-}
-
-namespace App\Models{
-/**
- * App\Models\Product
- *
- * @property int $id
- * @property string $name
- * @property string|null $description
- * @property string $price
- * @property int $stock
- * @property int $is_new
- * @property string $image_url
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CartItem> $cartItems
- * @property-read int|null $cart_items_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
- * @property-read int|null $categories_count
- * @property-read mixed $category
- * @method static \Database\Factories\ProductFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Product inCategory($category)
- * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Product query()
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereImageUrl($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereIsNew($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product wherePrice($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereStock($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereUpdatedAt($value)
- * @mixin \Eloquent
- * @noinspection PhpFullyQualifiedNameUsageInspection
- * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
- */
-	class IdeHelperProduct {}
 }
 
 namespace App\Models{

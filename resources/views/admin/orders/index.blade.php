@@ -27,7 +27,7 @@
                                     <td>{{ $order->id }}</td>
                                     <td>{{ $order->user->name }}</td>
                                     <td>{{ $order->shipping_address }}</td>
-                                    <td>{{ $order->phone }}</td>
+                                    <td>{{ $order->customer_phone }}</td>
                                     <td>{{ $order->total_price }} руб.</td>
                                     <td>{{ $order->status }}</td>
                                     <td>{{ $order->created_at }}</td>

@@ -22,7 +22,7 @@
                 </div>
                 <div class="form-group">
                     <label for="phone">Телефон</label>
-                    <input type="tel" class="form-control" id="phone" name="phone" value="{{ old('phone') }}" required>
+                    <input type="tel" class="form-control" id="customer_phone" name="customer_phone" value="{{ old('phone') }}" required>
                 </div>
                 <div class="form-group">
                     <label for="address">Адрес доставки</label>

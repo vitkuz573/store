@@ -17,6 +17,7 @@ return new class extends Migration
             $table->decimal('total_price', 10)->default(0);
             $table->enum('status', ['Ожидает', 'В обработке', 'Доставляется', 'Доставлен'])->default('Ожидает');
             $table->string('customer_name');
+            $table->string('customer_phone');
             $table->string('customer_email');
             $table->string('shipping_address');
             $table->string('payment_method');

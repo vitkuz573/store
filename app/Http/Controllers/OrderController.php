@@ -70,6 +70,7 @@ class OrderController extends Controller
         $order->customer_email = $request->input('customer_email');
         $order->shipping_address = $request->input('shipping_address');
         $order->payment_method = $request->input('payment_method');
+        $order->notes = $request->input('notes');
         $order->status = 'Ожидает';
 
         $order->save();

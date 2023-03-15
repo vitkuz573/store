@@ -7,6 +7,7 @@
         <p><strong>Идентификатор заказа:</strong> {{ $order->id }}</p>
         <p><strong>Стоимость заказа:</strong> {{ number_format($order->total_price, 2, ',', ' ') }} руб.</p>
         <p><strong>Статус заказа:</strong> {{ $order->status }}</p>
+        <p><strong>Примечание к заказу:</strong> {{ $order->notes }}</p>
 
         <h2>Товары в заказе</h2>
 

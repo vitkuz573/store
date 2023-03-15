@@ -5,12 +5,12 @@
         <div class="col-md-3 mb-4">
             <form method="GET" action="{{ route('products.index') }}">
                 <div class="form-group mt-3">
-                    <label for="min_price">Минимальная цена:</label>
-                    <input type="number" name="min_price" id="min_price" class="form-control" value="{{ $minPrice }}" min="0" step="1">
-                </div>
-                <div class="form-group mt-3">
-                    <label for="max_price">Максимальная цена:</label>
-                    <input type="number" name="max_price" id="max_price" class="form-control" value="{{ $maxPrice }}" min="0" step="1">
+                    <label for="price_range">Диапазон цен:</label>
+                    <div class="input-group">
+                        <input type="number" name="min_price" id="min_price" class="form-control" value="{{ $minPrice }}" min="0" step="1" placeholder="от">
+                        <div class="input-group-text">-</div>
+                        <input type="number" name="max_price" id="max_price" class="form-control" value="{{ $maxPrice }}" min="0" step="1" placeholder="до">
+                    </div>
                 </div>
 
                 <div class="form-group mt-3">

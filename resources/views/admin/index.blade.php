@@ -10,16 +10,16 @@
                     <div class="card-body">
                         <div class="list-group">
                             <a href="{{ route('admin.users.index') }}" class="list-group-item list-group-item-action">
-                                <i class="fas fa-users mr-2"></i> {{ __('Управление пользователями') }}
+                                <i class="fas fa-user-cog mr-2"></i> {{ __('Управление пользователями') }}
                             </a>
                             <a href="{{ route('admin.orders.index') }}" class="list-group-item list-group-item-action">
                                 <i class="fas fa-shopping-cart mr-2"></i> {{ __('Управление заказами') }}
                             </a>
                             <a href="{{ route('admin.products.index') }}" class="list-group-item list-group-item-action">
-                                <i class="fas fa-boxes mr-2"></i> {{ __('Управление товарами') }}
+                                <i class="fas fa-cubes mr-2"></i> {{ __('Управление товарами') }}
                             </a>
                             <a href="{{ route('admin.categories.index') }}" class="list-group-item list-group-item-action">
-                                <i class="fas fa-boxes mr-2"></i> {{ __('Управление категориями') }}
+                                <i class="fas fa-tags mr-2"></i> {{ __('Управление категориями') }}
                             </a>
                         </div>
                     </div>

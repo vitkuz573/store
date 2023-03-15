@@ -1,6 +1,9 @@
-import axios from 'axios';
+'use strict';
 
-async function updateCartItem(productId, quantity) {
+import axios from 'axios';
+import debounce from 'lodash.debounce';
+
+const updateCartItem = async (productId, quantity) => {
     try {
         const response = await axios.put(`/cart/${productId}`, {
             product_id: productId,
@@ -11,9 +14,9 @@ async function updateCartItem(productId, quantity) {
     } catch (error) {
         console.error(error);
     }
-}
+};
 
-async function removeCartItem(productId) {
+const removeCartItem = async (productId) => {
     try {
         const response = await axios.delete(`/cart/${productId}`);
 
@@ -21,26 +24,27 @@ async function removeCartItem(productId) {
     } catch (error) {
         console.error(error);
     }
-}
+};
 
-function updateTotalPrice(totalPrice) {
+const updateTotalPrice = (totalPrice) => {
     const totalElem = document.querySelector('.total-price');
 
     if (totalElem) {
         totalElem.innerText = `${totalPrice.toFixed(0)} руб.`;
     }
-}
+};
 
-function updateItemTotal(itemTotalElem, itemTotal) {
+const updateItemTotal = (itemTotalElem, itemTotal) => {
     if (itemTotalElem) {
         itemTotalElem.innerText = `${itemTotal.toFixed(0)} руб.`;
     }
-}
+};
 
-async function handleQuantityChange(event) {
-    const form = event.target.closest('.update-form');
+const handleQuantityChange = debounce(async (event) => {
+    const { target } = event;
+    const form = target.closest('.update-form');
     const productId = form.querySelector('[name="product_id"]').value;
-    const quantity = event.target.value;
+    const quantity = target.value;
     const itemPriceElem = form.closest('tr').querySelector('.item-price');
     const itemTotalElem = form.closest('tr').querySelector('.item-total');
 
@@ -52,10 +56,11 @@ async function handleQuantityChange(event) {
         updateItemTotal(itemTotalElem, itemTotal);
         updateTotalPrice(data.totalPrice);
     }
-}
+}, 300);
 
-async function handleRemoveFromCart(event) {
-    const productId = event.target.getAttribute('data-product-id');
+const handleRemoveFromCart = async (event) => {
+    const { target } = event;
+    const productId = target.getAttribute('data-product-id');
     const itemElem = document.querySelector(`#cart-item-${productId}`);
 
     const data = await removeCartItem(productId);
@@ -64,17 +69,17 @@ async function handleRemoveFromCart(event) {
         itemElem.remove();
         updateTotalPrice(data.totalPrice);
     }
-}
+};
 
-function handleCartEvent(event) {
-    const target = event.target;
+const handleCartEvent = (event) => {
+    const { target } = event;
 
     if (target.matches('.item-quantity input[type="number"]')) {
         handleQuantityChange(event);
     } else if (target.matches('.remove-from-cart')) {
         handleRemoveFromCart(event);
     }
-}
+};
 
 document.addEventListener('DOMContentLoaded', () => {
     const cartTable = document.querySelector('.cart-table');

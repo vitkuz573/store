@@ -16,7 +16,7 @@
                 <div class="form-group mt-2">
                     <label for="categories">Категории:</label>
                     <div class="dropdown">
-                        <button class="btn btn-light dropdown-toggle form-control" type="button" id="categoryDropdown" data-target="#categoryDropdownMenu" aria-haspopup="true">
+                        <button class="btn-outline-secondary dropdown-toggle form-control" type="button" id="categoryDropdown" data-target="#categoryDropdownMenu" aria-haspopup="true">
                             Выберите категории
                         </button>
                         <div id="categoryDropdownMenu" class="dropdown-menu checkbox-menu" aria-labelledby="categories">
@@ -38,7 +38,6 @@
                 @forelse($products as $product)
                     <div class="col-md-4 mb-4">
                         <div class="card h-100 shadow-sm border-0">
-                            <a href="{{ route('products.show', $product) }}" class="stretched-link"></a>
                             <div class="position-relative">
                                 @if($product->is_new)
                                     <div class="card-badge bg-primary text-white fw-bold rounded-pill px-2 py-1 position-absolute top-0 start-0 my-2 mx-3">

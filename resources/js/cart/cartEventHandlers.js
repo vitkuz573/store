@@ -1,5 +1,24 @@
-import { removeCartItem } from './cartApi';
-import { handleQuantityChange, updateTotalPrice } from './cartHelpers';
+import {removeCartItem, updateCartItem} from './cartApi';
+import {updateTotalPrice, updateItemTotal} from './cartHelpers';
+import {debounce} from "lodash";
+
+export const handleQuantityChange = debounce(async (event) => {
+    const { target } = event;
+    const form = target.closest('.update-form');
+    const productId = form.querySelector('[name="product_id"]').value;
+    const quantity = target.value;
+    const itemPriceElem = form.closest('tr').querySelector('.item-price');
+    const itemTotalElem = form.closest('tr').querySelector('.item-total');
+
+    const data = await updateCartItem(productId, quantity);
+
+    if (data) {
+        const itemPrice = parseFloat(itemPriceElem.innerText);
+        const itemTotal = itemPrice * data.quantity;
+        updateItemTotal(itemTotalElem, itemTotal);
+        updateTotalPrice(data.totalPrice);
+    }
+}, 300);
 
 export const handleRemoveFromCart = async (event) => {
     const { target } = event;

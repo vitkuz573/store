@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f3e4011d14bb51435c5beafeb3149d26",
+    "content-hash": "2440be18c7805ce0f6cb6e3a22805e5e",
     "packages": [
         {
             "name": "brick/math",
@@ -432,51 +432,6 @@
                 }
             ],
             "time": "2023-01-14T14:17:03+00:00"
-        },
-        {
-            "name": "fortawesome/font-awesome",
-            "version": "6.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/FortAwesome/Font-Awesome.git",
-                "reference": "d02961b018153506364077343b0edcde0a39d27e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/FortAwesome/Font-Awesome/zipball/d02961b018153506364077343b0edcde0a39d27e",
-                "reference": "d02961b018153506364077343b0edcde0a39d27e",
-                "shasum": ""
-            },
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "CC-BY-4.0",
-                "OFL-1.1",
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "The Font Awesome Team",
-                    "homepage": "https://github.com/orgs/FortAwesome/people"
-                }
-            ],
-            "description": "The iconic font, CSS, and SVG framework",
-            "homepage": "https://fontawesome.com",
-            "keywords": [
-                "FontAwesome",
-                "awesome",
-                "bootstrap",
-                "font",
-                "icon",
-                "svg"
-            ],
-            "support": {
-                "docs": "http://fontawesome.com/docs",
-                "email": "hello@fontawesome.com",
-                "issues": "https://github.com/FortAwesome/Font-Awesome/issues",
-                "source": "https://github.com/FortAwesome/Font-Awesome"
-            },
-            "time": "2023-02-07T19:23:03+00:00"
         },
         {
             "name": "fruitcake/php-cors",

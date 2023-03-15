@@ -7,7 +7,7 @@
 import './bootstrap';
 import { createApp } from 'vue';
 
-import '../../vendor/fortawesome/font-awesome/js/all';
+import '@fortawesome/fontawesome-free/js/all.min'
 
 import './cart/main';
 import './products'

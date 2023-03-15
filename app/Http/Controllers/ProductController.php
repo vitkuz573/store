@@ -40,7 +40,7 @@ class ProductController extends Controller
             $productsQuery->where('name', 'LIKE', '%' . $search . '%');
         }
 
-        $products = $productsQuery->with('categories')->orderBy('created_at', 'desc')->paginate(8);
+        $products = $productsQuery->with('categories')->orderBy('created_at', 'desc')->paginate(9);
 
         return view('products.index', [
             'products' => $products,

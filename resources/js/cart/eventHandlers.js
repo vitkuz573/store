@@ -1,5 +1,5 @@
-import {removeCartItem, updateCartItem} from './cartApi';
-import {updateTotalPrice, updateItemTotal} from './cartHelpers';
+import {removeCartItem, updateCartItem} from './api';
+import {updateTotalPrice, updateItemTotal} from './helpers';
 import {debounce} from "lodash";
 
 export const handleQuantityChange = debounce(async (event) => {

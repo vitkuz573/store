@@ -1,4 +1,4 @@
-import { handleCartEvent } from './cartEventHandlers';
+import { handleCartEvent } from './eventHandlers';
 
 document.addEventListener('DOMContentLoaded', () => {
     const cartTable = document.querySelector('.cart-table');

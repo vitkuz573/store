@@ -36,6 +36,7 @@
         <h2>Информация о клиенте</h2>
 
         <p><strong>Имя клиента:</strong> {{ $order->customer_name }}</p>
+        <p><strong>Телефон клиента:</strong> {{ $order->customer_phone }}</p>
         <p><strong>Email клиента:</strong> {{ $order->customer_email }}</p>
         <p><strong>Адрес доставки:</strong> {{ $order->shipping_address }}</p>
 

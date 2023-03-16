@@ -2,23 +2,13 @@ import { removeCartItem, updateCartItem } from './api';
 import { updateTotalPrice, updateItemTotal } from './helpers';
 import { debounce } from 'lodash';
 
-const getRow = (element) => element.closest('tr');
-
-export const handleQuantityChange = debounce(async ({ target }) => {
-    const form = target.closest('.update-form');
-    const productId = form.querySelector('[name="product_id"]').value;
-    const quantity = target.value;
-    const row = getRow(target);
-    const itemPriceElem = row.querySelector('.item-price');
-    const itemTotalElem = row.querySelector('.item-total');
-
+const handleQuantityChange = debounce(async (input) => {
     try {
-        const data = await updateCartItem(productId, quantity);
+        const data = await updateCartItem(input.closest('tr').querySelector('[name="product_id"]').value, input.value);
 
         if (data) {
-            const itemPrice = parseFloat(itemPriceElem.textContent);
-            const itemTotal = itemPrice * data.quantity;
-            updateItemTotal(itemTotalElem, itemTotal);
+            const row = input.closest('tr');
+            updateItemTotal(row.querySelector('.item-total'), parseFloat(row.querySelector('.item-price').textContent) * data.quantity);
             updateTotalPrice(data.totalPrice);
         }
     } catch (error) {
@@ -26,15 +16,12 @@ export const handleQuantityChange = debounce(async ({ target }) => {
     }
 }, 300);
 
-export const handleRemoveFromCart = async ({ target }) => {
-    const productId = target.getAttribute('data-product-id');
-    const itemElem = document.querySelector(`#cart-item-${productId}`);
-
+const handleRemoveFromCart = async (button) => {
     try {
-        const data = await removeCartItem(productId);
+        const data = await removeCartItem(button.getAttribute('data-product-id'));
 
         if (data) {
-            itemElem.remove();
+            document.getElementById(`cart-item-${button.getAttribute('data-product-id')}`).remove();
             updateTotalPrice(data.totalPrice);
         }
     } catch (error) {
@@ -43,11 +30,9 @@ export const handleRemoveFromCart = async ({ target }) => {
 };
 
 export const handleCartEvent = (event) => {
-    const { target } = event;
-
-    if (target.matches('.item-quantity input[type="number"]')) {
-        handleQuantityChange(event);
-    } else if (target.matches('.remove-from-cart')) {
-        handleRemoveFromCart(event);
+    if (event.target.matches('.item-quantity input[type="number"]')) {
+        handleQuantityChange(event.target);
+    } else if (event.target.matches('.remove-from-cart')) {
+        handleRemoveFromCart(event.target);
     }
 };

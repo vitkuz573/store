@@ -2,12 +2,7 @@ import axios from 'axios';
 
 export const updateCartItem = async (productId, quantity) => {
     try {
-        const response = await axios.put(`/cart/${productId}`, {
-            product_id: productId,
-            quantity: quantity,
-        });
-
-        return response.data;
+        return (await axios.put(`/cart/${productId}`, { product_id: productId, quantity })).data;
     } catch (error) {
         console.error(error);
     }
@@ -15,9 +10,7 @@ export const updateCartItem = async (productId, quantity) => {
 
 export const removeCartItem = async (productId) => {
     try {
-        const response = await axios.delete(`/cart/${productId}`);
-
-        return response.data;
+        return (await axios.delete(`/cart/${productId}`)).data;
     } catch (error) {
         console.error(error);
     }

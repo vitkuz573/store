@@ -31,6 +31,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('orders', OrderController::class)->except(['edit', 'update', 'destroy']);
 });
 
+// Защищенные маршруты для админ-панели
 Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(function () {
     Route::get('/', function () {
         return view('admin.index');

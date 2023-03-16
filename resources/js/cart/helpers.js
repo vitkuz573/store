@@ -1,13 +1,17 @@
+const formatPrice = (price) => {
+    return `${price.toFixed(0)}\xa0руб.`;
+};
+
 export const updateTotalPrice = (totalPrice) => {
     const totalElem = document.querySelector('.total-price');
 
     if (totalElem) {
-        totalElem.innerText = `${totalPrice.toFixed(0)} руб.`;
+        totalElem.innerText = formatPrice(totalPrice);
     }
 };
 
 export const updateItemTotal = (itemTotalElem, itemTotal) => {
     if (itemTotalElem) {
-        itemTotalElem.innerText = `${itemTotal.toFixed(0)} руб.`;
+        itemTotalElem.innerText = formatPrice(itemTotal);
     }
 };

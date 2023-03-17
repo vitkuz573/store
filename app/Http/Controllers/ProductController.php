@@ -20,35 +20,24 @@ class ProductController extends Controller
 
         $categories = Category::has('products')->get();
 
-        $productsQuery = Product::query();
+        $products = $this->applyFilters(Product::query(), compact('selectedCategories', 'minPrice', 'maxPrice', 'search'))
+            ->with('categories')
+            ->orderBy('created_at', 'desc')
+            ->paginate(9);
 
-        if (!empty($selectedCategories)) {
-            $productsQuery->whereHas('categories', function ($query) use ($selectedCategories) {
-                $query->whereIn('categories.id', $selectedCategories);
-            });
-        }
+        return view('products.index', compact('products', 'categories', 'selectedCategories', 'minPrice', 'maxPrice'));
+    }
 
-        if ($minPrice) {
-            $productsQuery->where('price', '>=', $minPrice);
-        }
-
-        if ($maxPrice) {
-            $productsQuery->where('price', '<=', $maxPrice);
-        }
-
-        if ($search) {
-            $productsQuery->where('name', 'LIKE', '%' . $search . '%');
-        }
-
-        $products = $productsQuery->with('categories')->orderBy('created_at', 'desc')->paginate(9);
-
-        return view('products.index', [
-            'products' => $products,
-            'categories' => $categories,
-            'selectedCategories' => $selectedCategories,
-            'minPrice' => $minPrice,
-            'maxPrice' => $maxPrice,
-        ]);
+    private function applyFilters($query, array $filters)
+    {
+        return $query->when(!empty($filters['selectedCategories']), fn($query) =>
+            $query->whereHas('categories', fn($q) =>
+                $q->whereIn('categories.id', $filters['selectedCategories'])
+            )
+        )
+        ->when($filters['minPrice'], fn($query) => $query->where('price', '>=', $filters['minPrice']))
+        ->when($filters['maxPrice'], fn($query) => $query->where('price', '<=', $filters['maxPrice']))
+        ->when($filters['search'], fn($query) => $query->where('name', 'LIKE', '%' . $filters['search'] . '%'));
     }
 
     public function show(Product $product): View|\Illuminate\Foundation\Application|Factory|Application

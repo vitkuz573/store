@@ -43,7 +43,6 @@ class ProductSeeder extends Seeder
             'Кабели и разъемы' => [
                 ['name' => 'Belkin CAT5e Snagless UTP Patch Cable', 'description' => 'Кабель категории 5e для подключения сетевого оборудования', 'price' => '226'],
                 ['name' => 'D-Link NCB-C6SGRYR-305-24 Cat6 FTP STP Networking Cable 305M', 'description' => 'Кабель категории 6 для подключения сетевого оборудования', 'price' => '7861'],
-                ['name' => 'Belkin A3L791-01-BLK 1-Feet CAT5E RJ45 Patch Cable', 'description' => 'Коммутатор с 5 портами Fast Ethernet', 'price' => '175'],
                 ['name' => 'Belkin CAT6 Snagless UTP Patch Cable', 'description' => 'Кабель категории 6 для подключения сетевого оборудования', 'price' => '320'],
                 ['name' => 'UGREEN RJ45 CAT6A Shielded Keystone Jack', 'description' => 'Категория 6A экранированный Keystone разъем для быстрой и надежной передачи данных', 'price' => '220'],
                 ['name' => 'Monoprice SlimRun Cat6A Ethernet Patch Cable', 'description' => 'Тонкий кабель Cat6A для подключения сетевого оборудования', 'price' => '350'],

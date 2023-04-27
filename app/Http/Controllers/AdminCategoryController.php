@@ -13,7 +13,7 @@ class AdminCategoryController extends Controller
 {
     public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $categories = Category::orderBy('name')->simplePaginate(10);
+        $categories = Category::orderBy('created_at', 'desc')->simplePaginate(10);
 
         return view('admin.categories.index', compact('categories'));
     }
